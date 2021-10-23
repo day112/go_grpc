@@ -42,6 +42,21 @@ func NewsqliteRepo() (Repository, error) {
 
 // DBに記事をINSERT
 func (r *sqliteRepo) InsertArticle(ctx context.Context, input *pb.ArticleInput) (int64, error) {
+	// Inputの内容(Author, Title, Content)をarticlesテーブルにINSERT
+	cmd := "INSERT INTO ariticles(author, title, content) VALUES (?, ?, ?)"
+	result, err := r.db.Exec(cmd, input.Author, input.Title, input.Content)
+	if err != nil {
+		return 0, err
+	}
+
+	// INSERTした記事のIDを取得
+	id, err := result.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+
+	// INSERTした記事のIDを返す
+	return id, nil
 }
 
 // DBからIDに基づいて記事をSELECT
