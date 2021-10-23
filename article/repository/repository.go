@@ -96,7 +96,15 @@ func (r *sqliteRepo) UpdateArticle(ctx context.Context, id int64, input *pb.Arti
 
 // DB内の記事をDELETE
 func (r *sqliteRepo) DeleteArticle(ctx context.Context, id int64) error {
+	// 該当IDの記事をDELETE
+	cmd := "DELETE FROM articles WHERE id = ?"
+	_, err := r.db.Exec(cmd, id)
+	if err != nil {
+		return err
+	}
 
+	// errorがなければ返り値なし
+	return nil
 }
 
 // articlesテーブルの記事を全取得
