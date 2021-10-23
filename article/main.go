@@ -61,7 +61,12 @@ func update(c *client.Client) {
 
 // 記事をDELETE
 func delete(c *client.Client) {
-
+	var id int64 = 1
+	res, err := c.Service.DeleteArticle(context.Background(), &pb.DeleteArticleRequest{Id: id})
+	if err != nil {
+		log.Fatalf("Failed to UpdateArticle: %v\n", err)
+	}
+	fmt.Printf("The article has been deleted (%v)\n", res)
 }
 
 // 記事を全取得
