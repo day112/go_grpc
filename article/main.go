@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"go_grpc/article/client"
 	"go_grpc/article/pb"
+	"io"
 	"log"
 )
 
@@ -71,5 +72,21 @@ func delete(c *client.Client) {
 
 // 記事を全取得
 func list(c *client.Client) {
+	// streamレスポンスを受け取る
+	stream, err := c.Service.ListArticle(context.Background(), &pb.ListArticleRequest{})
+	if err != nil {
+		log.Fatalf("Failed to ListArticle: %v\n", err)
+	}
 
+	// Server Streamingで渡されたレスポンスを1つ1つ出力
+	for {
+		res, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatalf("Failed to Server Streaming: %v\n", err)
+		}
+		fmt.Println(res)
+	}
 }
