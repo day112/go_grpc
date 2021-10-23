@@ -109,5 +109,13 @@ func (r *sqliteRepo) DeleteArticle(ctx context.Context, id int64) error {
 
 // articlesテーブルの記事を全取得
 func (r *sqliteRepo) SelectAllArticles() (*sql.Rows, error) {
+	// articlesテーブルの記事を全取得
+	cmd := "SELECT * FROM articles"
+	rows, err := r.db.Query(cmd)
+	if err != nil {
+		return nil, err
+	}
 
+	// 全取得した記事を*sql.Rowsの形で返す
+	return rows, nil
 }
