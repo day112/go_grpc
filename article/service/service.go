@@ -68,7 +68,26 @@ func (s *service) ReadArticle(ctx context.Context, req *pb.ReadArticleRequest) (
 
 // 記事のUPDATE処理
 func (s *service) UpdateArticle(ctx context.Context, req *pb.UpdateArticleRequest) (*pb.UpdateArticleResponse, error) {
+	// UPDATEする記事のIDを取得
+	id := req.GetId()
 
+	// UPDATEする記事の変更内容(Author, Title, Content)を取得
+	input := req.GetArticleInput()
+
+	// 該当IDの記事をUPDATE
+	if err := s.repository.UpdateArticle(ctx, id, input); err != nil {
+		return nil, err
+	}
+
+	// UPDATEした記事をレスポンスとして返す
+	return &pb.UpdateArticleResponse{
+		Article: &pb.Article{
+			Id:      id,
+			Author:  input.Author,
+			Title:   input.Title,
+			Content: input.Content,
+		},
+	}, nil
 }
 
 // 記事のDELETE処理
