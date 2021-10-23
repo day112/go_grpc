@@ -46,7 +46,24 @@ func (s *service) CreateArticle(ctx context.Context, req *pb.CreateArticleReques
 
 // 記事のREAD処理
 func (s *service) ReadArticle(ctx context.Context, req *pb.ReadArticleRequest) (*pb.ReadArticleResponse, error) {
+	// READする記事のIDを取得
+	id := req.GetId()
 
+	// DBから該当IDの記事を取得
+	a, err := s.repository.SelectArticleByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	// 取得した記事をレスポンスとして返す
+	return &pb.ReadArticleResponse{
+		Article: &pb.Article{
+			Id:      id,
+			Author:  a.Author,
+			Title:   a.Title,
+			Content: a.Content,
+		},
+	}, nil
 }
 
 // 記事のUPDATE処理
