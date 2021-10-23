@@ -83,7 +83,15 @@ func (r *sqliteRepo) SelectArticleByID(ctx context.Context, id int64) (*pb.Artic
 
 // DB内の記事をUPDATE
 func (r *sqliteRepo) UpdateArticle(ctx context.Context, id int64, input *pb.ArticleInput) error {
+	// 該当のIDのAuthor, Title, ContentをUPDATE
+	cmd := "UPDATE articles SET author = ?, title = ?, content = ? WHERE id = ?"
+	_, err := r.db.Exec(cmd, input.Author, input.Title, input.Content, id)
+	if err != nil {
+		return err
+	}
 
+	// errorがなければ返り値なし
+	return nil
 }
 
 // DB内の記事をDELETE
