@@ -46,7 +46,17 @@ func read(c *client.Client) {
 
 // 記事をUPDATE
 func update(c *client.Client) {
-
+	var id int64 = 2
+	input := &pb.ArticleInput{
+		Author:  "GraphQL master",
+		Title:   "GraphQL",
+		Content: "GraphQL is very smart!",
+	}
+	res, err := c.Service.UpdateArticle(context.Background(), &pb.UpdateArticleRequest{Id: id, ArticleInput: input})
+	if err != nil {
+		log.Fatalf("Failed to UpdateArticle: %v\n", err)
+	}
+	fmt.Printf("UpdateArticle Response: %v\n", res)
 }
 
 // 記事をDELETE
