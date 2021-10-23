@@ -106,5 +106,21 @@ func (s *service) DeleteArticle(ctx context.Context, req *pb.DeleteArticleReques
 
 // 記事の全取得処理
 func (s *service) ListArticle(req *pb.ListArticleRequest, stream pb.ArticleService_ListArticleServer) error {
+	// 記事を全取得
+	rows, err := s.repository.SelectAllArticles()
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
 
+	// 取得した記事を1つ1つレスポンスとしてServer Streamingで返す
+	for rows.Next() {
+		var a pb.Article
+		err := rows.Scan(&a.Id, &a.Author, &a.Title, &a.Content)
+		if err != nil {
+			return err
+		}
+		stream.Send(&pb.ListArticleResponse{Article: &a})
+	}
+	return nil
 }
