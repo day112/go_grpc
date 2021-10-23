@@ -9,7 +9,7 @@ import (
 // Clientからサービスを呼び出せるようにする
 type Client struct {
 	conn    *grpc.ClientConn
-	service pb.ArticleServiceClient
+	Service pb.ArticleServiceClient
 }
 
 func NewClient(url string) (*Client, error) {
