@@ -2,8 +2,9 @@ package service
 
 import (
 	"context"
-	"go_grpc/pb"
-	"go_grpc/repository"
+
+	"go_grpc/article/pb"
+	"go_grpc/article/repository"
 )
 
 type Service interface {

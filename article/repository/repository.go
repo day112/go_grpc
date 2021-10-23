@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
-	"go_grpc/pb"
+	"go_grpc/article/pb"
 
 	_ "github.com/mattn/go-sqlite3"
 )

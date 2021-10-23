@@ -1,9 +1,9 @@
 package main
 
 import (
-	"go_grpc/pb"
-	"go_grpc/repository"
-	"go_grpc/service"
+	"go_grpc/article/pb"
+	"go_grpc/article/repository"
+	"go_grpc/article/service"
 	"log"
 	"net"
 
