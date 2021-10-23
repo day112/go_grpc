@@ -36,7 +36,12 @@ func create(c *client.Client) {
 
 // 記事をREAD
 func read(c *client.Client) {
-
+	var id int64 = 2
+	res, err := c.Service.ReadArticle(context.Background(), &pb.ReadArticleRequest{Id: id})
+	if err != nil {
+		log.Fatalf("Failed to ReadArticle: %v\n", err)
+	}
+	fmt.Printf("ReadArticle Response: %v\n", res)
 }
 
 // 記事をUPDATE
