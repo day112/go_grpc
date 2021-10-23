@@ -13,7 +13,7 @@ type Repository interface {
 	SelectArticleByID(ctx context.Context, id int64) (*pb.Article, error)
 	UpdateArticle(ctx context.Context, id int64, input *pb.ArticleInput) error
 	DeleteArticle(ctx context.Context, id int64) error
-	SelectAllArticles(*sql.Rows, error) error
+	SelectAllArticles() (*sql.Rows, error)
 }
 
 type sqliteRepo struct {
