@@ -61,7 +61,24 @@ func (r *sqliteRepo) InsertArticle(ctx context.Context, input *pb.ArticleInput) 
 
 // DBからIDに基づいて記事をSELECT
 func (r *sqliteRepo) SelectArticleByID(ctx context.Context, id int64) (*pb.Article, error) {
+	// 該当IDの記事をSELECT
+	cmd := "SELECT * FROM articles WHERE id = ?"
+	row := r.db.QueryRow(cmd, id)
+	var a pb.Article
 
+	// SELECTした記事の内容を読み取る
+	err := row.Scan(&a.Id, &a.Author, &a.Title, &a.Content)
+	if err != nil {
+		return nil, err
+	}
+
+	// SELECTした記事を返す
+	return &pb.Article{
+		Id:      a.Id,
+		Author:  a.Author,
+		Title:   a.Title,
+		Content: a.Content,
+	}, nil
 }
 
 // DB内の記事をUPDATE
