@@ -48,6 +48,22 @@ func (c *Client) CreateArticle(ctx context.Context, input *pb.ArticleInput) (*mo
 	}, nil
 }
 
+func (c *Client) UpdateArticle(ctx context.Context, id int64, input *pb.ArticleInput) (*model.Article, error) {
+	// UPDATE処理のレスポンスを受け取る
+	res, err := c.Service.UpdateArticle(ctx, &pb.UpdateArticleRequest{Id: id, ArticleInput: input})
+	if err != nil {
+		return nil, err
+	}
+
+	// GraphQLサービスで扱える形にしてUPDATEしたArticleを返す
+	return &model.Article{
+		ID:      int(res.Article.Id),
+		Author:  res.Article.Author,
+		Title:   res.Article.Title,
+		Content: res.Article.Content,
+	}, nil
+}
+
 func (c *Client) ReadArticle(ctx context.Context, id int64, input *pb.ArticleInput) (*model.Article, error) {
 	// READ処理のレスポンスを受け取る
 	res, err := c.Service.ReadArticle(ctx, &pb.ReadArticleRequest{Id: id})

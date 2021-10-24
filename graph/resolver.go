@@ -31,3 +31,21 @@ func (r *mutationResolver) CreateArticle(ctx context.Context, input model.Create
 	// CREATEしたArticleを返す
 	return article, nil
 }
+
+func (r *mutationResolver) UpdateArticle(ctx context.Context, input model.UpdateInput) (*model.Article, error) {
+	// gRPCサーバーでArticleをUPDATE
+	article, err := r.ArticleClient.UpdateArticle(
+		ctx,
+		int64(input.ID),
+		&pb.ArticleInput{
+			Author:  input.Author,
+			Title:   input.Title,
+			Content: input.Content,
+		})
+	if err != nil {
+		return nil, err
+	}
+
+	// UPDATEしたArticleを返す
+	return article, nil
+}
