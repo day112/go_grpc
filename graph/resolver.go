@@ -60,3 +60,14 @@ func (r *mutationResolver) DeleteArticle(ctx context.Context, input int) (int, e
 	// DELETEしたArticleのIDを返す
 	return int(id), nil
 }
+
+func (r *queryResolver) Article(ctx context.Context, input int) (*model.Article, error) {
+	// 入力したIDの記事をgRPCサーバーからREAD
+	article, err := r.ArticleClient.ReadArticle(ctx, int64(input))
+	if err != nil {
+		return nil, err
+	}
+
+	// READしたArticleを返す
+	return article, nil
+}
