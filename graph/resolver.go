@@ -49,3 +49,14 @@ func (r *mutationResolver) UpdateArticle(ctx context.Context, input model.Update
 	// UPDATEしたArticleを返す
 	return article, nil
 }
+
+func (r *mutationResolver) DeleteArticle(ctx context.Context, input int) (int, error) {
+	// gRPCサーバーでArticleをDELETE
+	id, err := r.ArticleClient.DeleteArticle(ctx, int64(input))
+	if err != nil {
+		return 0, err
+	}
+
+	// DELETEしたArticleのIDを返す
+	return int(id), nil
+}
