@@ -71,3 +71,14 @@ func (r *queryResolver) Article(ctx context.Context, input int) (*model.Article,
 	// READしたArticleを返す
 	return article, nil
 }
+
+func (r *queryResolver) Articles(ctx context.Context) ([]*model.Article, error) {
+	// gRPCサーバーでArticleを全取得
+	articles, err := r.ArticleClient.ListArticle(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// 全取得したArticleを返す
+	return articles, nil
+}
